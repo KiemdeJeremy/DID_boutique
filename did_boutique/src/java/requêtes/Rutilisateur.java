@@ -83,13 +83,13 @@ public class Rutilisateur {
     }
 
     // Méthode pour obtenir un utilisateur par son identifiant
-    public Mutilisateur getUtilisateur(Long id) {
+    public Mutilisateur getUtilisateur(Long idUtilisateur) {
         Mutilisateur utilisateur = null;
-        String sql = "SELECT * FROM utilisateur WHERE id = ?";
+        String sql = "SELECT * FROM utilisateur WHERE idUtilisateur = ?";
         try {
             con = BD.maConnexion();
             pst = con.prepareStatement(sql);
-            pst.setLong(1, id);
+            pst.setLong(1, idUtilisateur);
             rs = pst.executeQuery();
             if (rs.next()) {
                 utilisateur = new Mutilisateur();
@@ -108,8 +108,26 @@ public class Rutilisateur {
         }
         return utilisateur;
     }
+    
+    // Méthode pour obtenir un utilisateur par son matricule
+    public Boolean getUtilisateurByMatricul(String matricule) {
+        Mutilisateur utilisateur = null;
+        String sql = "SELECT * FROM utilisateur WHERE matricule = ?";
+        try {
+            con = BD.maConnexion();
+            pst = con.prepareStatement(sql);
+            pst.setString(1, matricule);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-    // Méthode pour obtenir la liste de tous les produits
+    // Méthode pour obtenir la liste de tous les utilisateurs
     public List<Mutilisateur> listAllUtilisateur() {
         List<Mutilisateur> listMutilisateur = new ArrayList<>();
         String sql = "SELECT * FROM utilisateur";

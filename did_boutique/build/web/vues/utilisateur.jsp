@@ -56,30 +56,43 @@
                     <div class="col-4">
                         <div class=" bg-dark">
                             <h2 class="mb-4 text-warning text-center"><u>Enregistrer un utilisateur</u></h2>
+                                    <%
+                                        // Récupération de l'utilisateur de la session
+                                        Mutilisateur user = (Mutilisateur) session.getAttribute("utilisateur");
+                                        // On le supprime immédiatement de la session
+                                        if (user != null) {
+                                            session.removeAttribute("utilisateur");
+                                        }
+                                    %>
+
                             <form class="w-75 text-warning ml-5" action="${pageContext.request.contextPath}/utilisateurEnregistrement" method="post">
                                 <div class="form-group">
                                     <label for="nom">Nom de l'utilisateur</label>
-                                    <input type="text" id="nom" name="nom" class="form-control" required>
+                                    <input type="text" id="nom" name="nom" class="form-control" required 
+                                           value="<%= user != null ? user.getNom() : ""%>">
                                 </div>
                                 <div class="form-group">
                                     <label for="prenom">Prenom de l'utilisateur</label>
-                                    <input type="text" id="prenom" name="prenom" class="form-control" required>
+                                    <input type="text" id="prenom" name="prenom" class="form-control" required 
+                                           value="<%= user != null ? user.getPrenom() : ""%>">
                                 </div>
                                 <div class="form-group">
                                     <label for="sexe">Sexe de l'utilisateur</label>
                                     <select id="sexe" name="sexe" class="form-control" required>
                                         <option value="">choisir</option>
-                                        <option value="masculin">masculin</option>
-                                        <option value="feminin">feminin</option>
+                                        <option value="masculin" <%= user != null && "masculin".equals(user.getSexe()) ? "selected" : ""%>>masculin</option>
+                                        <option value="feminin" <%= user != null && "feminin".equals(user.getSexe()) ? "selected" : ""%>>feminin</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="dateNaissance">Date de naissance</label>
-                                    <input type="date" id="dateNaissance" name="dateNaissance" class="form-control" required>
+                                    <input type="date" id="dateNaissance" name="dateNaissance" class="form-control" required
+                                           value="<%= user != null && user.getDateNaissance() != null ? user.getDateNaissance().toString() : ""%>">
                                 </div>
                                 <div class="form-group">
                                     <label for="matricule">Matricule de l'utilisateur</label>
-                                    <input type="text" id="matricule" name="matricule" class="form-control" required>
+                                    <input type="text" id="matricule" name="matricule" class="form-control" required
+                                           value="<%= user != null ? user.getMatricule() : ""%>">
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password de l'utilisateur</label>
@@ -89,16 +102,16 @@
                                     <label for="role">Role de l'utilisateur</label>
                                     <select id="role" name="role" class="form-control" required>
                                         <option value="">choisir</option>
-                                        <option value="livreur">Livreur</option>
-                                        <option value="magasinier">Magasinier</option>
-                                        <option value="caissier">Caissier</option>
+                                        <option value="livreur" <%= user != null && "livreur".equals(user.getRole()) ? "selected" : ""%>>Livreur</option>
+                                        <option value="magasinier" <%= user != null && "magasinier".equals(user.getRole()) ? "selected" : ""%>>Magasinier</option>
+                                        <option value="caissier" <%= user != null && "caissier".equals(user.getRole()) ? "selected" : ""%>>Caissier</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="telephone">Téléphone de l'utilisateur</label>
-                                    <input type="tel" id="telephone" name="telephone" class="form-control" required>
+                                    <input type="tel" id="telephone" name="telephone" class="form-control" required
+                                           value="<%= user != null ? user.getTelephone() : ""%>">
                                 </div>
-
                                 <button type="submit" class="btn btn-primary mb-3 w-50">Enregistrer</button>
                             </form>
                         </div>
@@ -165,6 +178,7 @@
                                                 <p><strong>Sexe:</strong> <%= utilisateur.getSexe()%></p>
                                                 <p><strong>Date de naissance:</strong> <%= utilisateur.getDateNaissance()%></p>
                                                 <p><strong>Matricule:</strong> <%= utilisateur.getMatricule()%></p>
+                                                <p><strong>Password:</strong> <%= utilisateur.getPassword()%></p>
                                                 <p><strong>Rôle:</strong> <%= utilisateur.getRole()%></p>
                                                 <p><strong>Téléphone:</strong> <%= utilisateur.getTelephone()%></p>
                                             </div>
@@ -271,25 +285,18 @@
                                     </div>
                                 </div>
 
-                                <!-- Modal de notification -->
+                                <!-- Modal de notification message-->
                                 <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="messageModalLabel">Notification</h5>
+                                                <h5 class="modal-title" id="messageModalLabel"> <i class="fa-solid fa-thumbs-up text-success fa-2x"></i> Notification</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
                                                 <%= message != null ? message : ""%>
-                                                <% if (erreurs != null && !erreurs.isEmpty()) { %>
-                                                <ul>
-                                                    <% for (String erreur : erreurs) {%>
-                                                    <li><%= erreur%></li>
-                                                        <% } %>
-                                                </ul>
-                                                <% } %>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
@@ -301,6 +308,36 @@
                                         }
                                     }
                                 %>
+
+                                <!-- Modal de notification erreur-->
+                                <div class="modal fade" id="erreurModal" tabindex="-1" role="dialog" aria-labelledby="erreurModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="erreurModalLabel"> <i class="fa-solid fa-circle-exclamation text-danger fa-2x"></i> Notification d'erreur</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <% if (erreurs != null && !erreurs.isEmpty()) { %>
+                                                <ul class="list-unstyled">
+                                                    <% for (String erreur : erreurs) {%>
+                                                    <li class="d-flex align-items-center mb-2">
+                                                        <i class="fa-solid fa-times-circle mr-2 text-danger"></i>
+                                                        <span><%= erreur%></span>
+                                                    </li>
+                                                    <% } %>
+                                                </ul>
+                                                <% }%>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 </tbody>
                             </table>
                         </div>
@@ -340,12 +377,10 @@
 
         </script>   
 
-        <!-- Script pour le modal -->
+        <!-- Script pour le modal du message -->
         <script>
             $(document).ready(function () {
                 var message = "<%= message%>";
-                var erreurs = "<%= erreurs%>";
-
                 if (message && message !== "null" && message !== "") {
                     $('#messageModal').modal('show');
 
@@ -354,10 +389,15 @@
                         $('#messageModal').modal('hide');
                     }, 2000);
                 }
+            });
+        </script>
 
-                if (erreurs && erreurs !== "null" && erreurs !== "") {
-                    $('#messageModal').modal('show');
-                }
+        <!-- Script pour le modal des erreurs -->
+        <script>
+            $(document).ready(function () {
+            <% if (erreurs != null && !erreurs.isEmpty()) { %>
+                $('#erreurModal').modal('show');
+            <% }%>
             });
         </script>
     </body>

@@ -8,6 +8,7 @@ package validateurs;
 import java.util.ArrayList;
 import java.util.List;
 import models.Mutilisateur;
+import requêtes.Rutilisateur;
 
 /**
  *
@@ -17,7 +18,7 @@ public class ValiderUtilisateur {
 
     public static List<String> validerUtilisateur(Mutilisateur utilisateur) {
         List<String> erreurs = new ArrayList<>();
-
+        Rutilisateur rutilisateur= new Rutilisateur();
         if (utilisateur == null) {
             erreurs.add("L'utilisateur ne peut pas être nul.");
             return erreurs; // Retourne immédiatement avec l'erreur
@@ -49,7 +50,8 @@ public class ValiderUtilisateur {
         if (utilisateur.getMatricule() == null || utilisateur.getMatricule().trim().isEmpty()) {
             erreurs.add("Le champ matricule n'est pas conforme.");
         }
-
+        
+        
         // Validation du mot de passe
         if (utilisateur.getPassword() == null || utilisateur.getPassword().length() < 8) {
             erreurs.add("Le mot de passe doit contenir au minimum 8 caractères.");
@@ -66,7 +68,10 @@ public class ValiderUtilisateur {
                 || utilisateur.getTelephone() <= 0) {
             erreurs.add("Le téléphone doit être un nombre positif de 8 chiffres.");
         }
-
+        
+        if(rutilisateur.getUtilisateurByMatricul(utilisateur.getMatricule())){
+            erreurs.add("ce matricule existe déja");
+        }
         return erreurs; // Retourne la liste des erreurs
     }
 }

@@ -32,27 +32,25 @@ public class ListUtilisateur extends HttpServlet {
         rutilisateur = new Rutilisateur();
     }
 
-  
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-         List<Mutilisateur> listUtilisateurs = rutilisateur.listAllUtilisateur();
-         if (listUtilisateurs == null) {
+
+        List<Mutilisateur> listUtilisateurs = rutilisateur.listAllUtilisateur();
+        if (listUtilisateurs == null) {
             listUtilisateurs = new ArrayList<>(); // Initialise la liste si elle est null
         }
-         for(Mutilisateur utilisateur:listUtilisateurs ){
-             System.out.println(utilisateur.getRole());
-         }
-         request.setAttribute("listUtilisateurs", listUtilisateurs);
-         request.getRequestDispatcher("/vues/utilisateur.jsp").forward(request, response);
+        for (Mutilisateur utilisateur : listUtilisateurs) {
+            System.out.println(utilisateur.getRole());
+        }
+        request.setAttribute("listUtilisateurs", listUtilisateurs);
+        request.getRequestDispatcher("/vues/utilisateur.jsp").forward(request, response);
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     @Override

@@ -8,7 +8,9 @@ package controlleurs;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,37 +41,80 @@ public class UtilisateurEnregistrement extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Récupération des paramètres du formulaire d'inscription
-            String nom = request.getParameter("nom");
-            String prenom = request.getParameter("prenom");
-            String sexe = request.getParameter("sexe");
-            String dateNaissancee = request.getParameter("dateNaissance");
-            String matricule = request.getParameter("matricule");
-            String password = request.getParameter("password");
-            String role = request.getParameter("role");
-            int telephone = Integer.parseInt(request.getParameter("telephone"));
+            // Initialisation de la liste des erreurs
+            List<String> erreurs = new ArrayList<>();
 
-            // Conversion de la chaîne de caractères en date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Ajuste le format selon ton besoin
-            java.util.Date parsedDate = dateFormat.parse(dateNaissancee);
-            java.sql.Date dateNaissance = new java.sql.Date(parsedDate.getTime());
-            Mutilisateur utilisateur = new Mutilisateur(nom, prenom, sexe, dateNaissance, matricule, password, role, telephone);
-            List<String> erreurs = ValiderUtilisateur.validerUtilisateur(utilisateur);
+            try {
+                // Récupération et validation des paramètres individuels
+                String nom = request.getParameter("nom");
+                String prenom = request.getParameter("prenom");
+                String sexe = request.getParameter("sexe");
+                String dateNaissancee = request.getParameter("dateNaissance");
+                String matricule = request.getParameter("matricule");
+                String password = request.getParameter("password");
+                String role = request.getParameter("role");
 
-            if (!erreurs.isEmpty()) {
-                // Ajouter les erreurs et l'utilisateur non valide à la requête
-                request.setAttribute("utilisateur", utilisateur);
+                // Validation du téléphone avant conversion
+                String telephoneStr = request.getParameter("telephone");
+                int telephone;
+                if (telephoneStr == null || telephoneStr.trim().isEmpty()) {
+                    erreurs.add("Le numéro de téléphone est requis");
+                    telephone = 0;
+                } else {
+                    try {
+                        telephone = Integer.parseInt(telephoneStr);
+                    } catch (NumberFormatException e) {
+                        erreurs.add("Le numéro de téléphone doit être un nombre valide");
+                        telephone = 0;
+                    }
+                }
+
+                // Validation de la date avant conversion
+                java.sql.Date dateNaissance = null;
+                if (dateNaissancee != null && !dateNaissancee.trim().isEmpty()) {
+                    try {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        java.util.Date parsedDate = dateFormat.parse(dateNaissancee);
+                        dateNaissance = new java.sql.Date(parsedDate.getTime());
+                    } catch (ParseException e) {
+                        erreurs.add("Le format de la date de naissance est invalide");
+                    }
+                } else {
+                    erreurs.add("La date de naissance est requise");
+                }
+
+                // Création de l'objet utilisateur
+                Mutilisateur utilisateur = new Mutilisateur(nom, prenom, sexe, dateNaissance, matricule, password, role, telephone);
+
+                // Validation de l'utilisateur
+                List<String> erreursValidation = ValiderUtilisateur.validerUtilisateur(utilisateur);
+                erreurs.addAll(erreursValidation);
+
+                // Traitement selon la présence d'erreurs
+                if (!erreurs.isEmpty()) {
+                    request.getSession().setAttribute("utilisateur", utilisateur);
+                    request.getSession().setAttribute("erreurs", erreurs);
+                    response.sendRedirect(request.getContextPath() + "/listUtilisateur");
+                    return; // Important : arrêter l'exécution ici
+                } else {
+                    // Aucune erreur, l'utilisateur est valide
+                    rutilisateur.insertUtilisateur(utilisateur);
+                    request.getSession().setAttribute("message", "Utilisateur enregistré avec succès");
+                    response.sendRedirect(request.getContextPath() + "/listUtilisateur");
+                    return; // Important : arrêter l'exécution ici
+                }
+            } catch (Exception e) {
+                // Capture des exceptions spécifiques au traitement
+                erreurs.add("Une erreur s'est produite lors du traitement : " + e.getMessage());
                 request.getSession().setAttribute("erreurs", erreurs);
-                // Rediriger vers la servlet
                 response.sendRedirect(request.getContextPath() + "/listUtilisateur");
-            } else {
-                // Aucune erreur, l'utilisateur est valide
-                rutilisateur.insertUtilisateur(utilisateur);
-                request.getSession().setAttribute("message", "Utilisateur enregistré avec succès");
-                response.sendRedirect(request.getContextPath() + "/listUtilisateur");
+                return;
             }
+
         } catch (Exception e) {
-            e.printStackTrace(); // Cela affichera l'erreur dans la console
+            // Capture des erreurs critiques (comme les erreurs de redirection)
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Une erreur système s'est produite");
         }
 
     }
