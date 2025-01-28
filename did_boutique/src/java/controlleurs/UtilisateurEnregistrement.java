@@ -59,7 +59,7 @@ public class UtilisateurEnregistrement extends HttpServlet {
             if (!erreurs.isEmpty()) {
                 // Ajouter les erreurs et l'utilisateur non valide à la requête
                 request.setAttribute("utilisateur", utilisateur);
-                request.getSession().setAttribute("erreurs", erreurs);
+                
                 // Rediriger vers la servlet
                 response.sendRedirect(request.getContextPath() + "/listUtilisateur");
             } else {
