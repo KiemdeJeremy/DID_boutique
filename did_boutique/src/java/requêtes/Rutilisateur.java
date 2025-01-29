@@ -70,12 +70,12 @@ public class Rutilisateur {
     }
 
     // Méthode pour supprimer un utilisateur en fonction de son identifiant
-    public void deleteUtilisateur(Long id) {
+    public void deleteUtilisateur(Long idUtilisateur) {
         String sql = "DELETE FROM utilisateur WHERE idUtilisateur = ?";
         try {
             con = BD.maConnexion();
             pst = con.prepareStatement(sql);
-            pst.setLong(1, id);
+            pst.setLong(1, idUtilisateur);
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,7 +110,7 @@ public class Rutilisateur {
     }
     
     // Méthode pour obtenir un utilisateur par son matricule
-    public Boolean getUtilisateurByMatricul(String matricule) {
+    public Boolean getUtilisateurByMatricule(String matricule) {
         Mutilisateur utilisateur = null;
         String sql = "SELECT * FROM utilisateur WHERE matricule = ?";
         try {
