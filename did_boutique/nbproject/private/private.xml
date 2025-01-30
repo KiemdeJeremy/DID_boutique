@@ -3,11 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/validateurs/ValiderUtilisateur.java</file>
             <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/FournisseurEnregistrement.java</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/UtilisateurEnregistrement.java</file>
             <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/web/vues/mesInclusions/menu.jsp</file>
             <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/web/vues/fournisseur.jsp</file>
             <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/web/vues/utilisateur.jsp</file>
             <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/web/index.jsp</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/web/vues/connexion.jsp</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/requêtes/Rutilisateur.java</file>
         </group>
     </open-files>
 </project-private>

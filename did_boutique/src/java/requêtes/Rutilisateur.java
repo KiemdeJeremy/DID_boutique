@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import models.Mutilisateur;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -37,7 +38,10 @@ public class Rutilisateur {
             pst.setString(3, utilisateur.getSexe());
             pst.setDate(4, new java.sql.Date(utilisateur.getDateNaissance().getTime()));
             pst.setString(5, utilisateur.getMatricule());
-            pst.setString(6, utilisateur.getPassword());
+
+            // Changer la ligne pour crypter le mot de passe
+            String hashedPassword = BCrypt.hashpw(utilisateur.getPassword(), BCrypt.gensalt());
+            pst.setString(6, hashedPassword);
             pst.setString(7, utilisateur.getRole());
             pst.setInt(8, utilisateur.getTelephone());
 
@@ -108,9 +112,9 @@ public class Rutilisateur {
         }
         return utilisateur;
     }
-    
+
     // Méthode pour obtenir un utilisateur par son matricule
-    public Boolean getUtilisateurByMatricule(String matricule) {
+    public Mutilisateur getUtilisateurByMatricule(String matricule) {
         Mutilisateur utilisateur = null;
         String sql = "SELECT * FROM utilisateur WHERE matricule = ?";
         try {
@@ -119,12 +123,23 @@ public class Rutilisateur {
             pst.setString(1, matricule);
             rs = pst.executeQuery();
             if (rs.next()) {
-                return true;
+                utilisateur = new Mutilisateur();
+                utilisateur.setIdUtilisateur(rs.getLong("idUtilisateur"));
+                utilisateur.setNom(rs.getString("nom"));
+                utilisateur.setPrenom(rs.getString("prenom"));
+                utilisateur.setSexe(rs.getString("sexe"));
+                utilisateur.setDateNaissance(rs.getDate("dateNaissance"));
+                utilisateur.setMatricule(rs.getString("matricule"));
+                utilisateur.setPassword(rs.getString("password"));
+                utilisateur.setRole(rs.getString("role"));
+                utilisateur.setTelephone(rs.getInt("telephone"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        
+        return utilisateur;
+
     }
 
     // Méthode pour obtenir la liste de tous les utilisateurs

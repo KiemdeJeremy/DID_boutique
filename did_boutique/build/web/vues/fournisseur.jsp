@@ -15,20 +15,14 @@
             <i class="fas fa-bars" id="btn"></i>
             <i class="fas fa-times" id="cancel"></i>
         </label>
-        <div class="sidebar">
-            <header>DID Boutique</header>
-            <ul>
-                <li><a href="${pageContext.request.contextPath}/listUtilisateur"><i class="fa-solid fa-user"></i>Utilisateur</a></li>
-                <li><a href="${pageContext.request.contextPath}/listFournisseur"><i class="fa-brands fa-ubuntu"></i>Fournisseur</a></li>
-                <li><a href="${pageContext.request.contextPath}/listAchat"><i class="fa-solid fa-cart-shopping"></i>Achat</a></li>
-                <li><a href="${pageContext.request.contextPath}/listClient"><i class="fa-solid fa-id-card"></i>Client</a></li>
-                <li><a href="${pageContext.request.contextPath}/listLivraison"><i class="fa-solid fa-car-side"></i>Livraison</a></li>
-                <li><a href="${pageContext.request.contextPath}/listDetailLivraison"><i class="fa-solid fa-paste"></i>Detail_Livraison</a></li>
-                <li><a href="${pageContext.request.contextPath}/listDetailAchat"><i class="fa-solid fa-cash-register"></i>Detail_Achat</a></li>
-                <li><a href="${pageContext.request.contextPath}/listCredit"><i class="fa-solid fa-circle-dollar-to-slot"></i>Credit</a></li>
-                <li><a href="${pageContext.request.contextPath}/listProduit"><i class="fa-solid fa-gift"></i>Produit</a></li>
-            </ul>
-        </div>
+        <%
+            String headerJSP = (String) session.getAttribute("headerJSP");
+            if (headerJSP == null) {
+                headerJSP = "/vues/mesInclusions/adminHeader.jsp"; // En cas de problème avec l'attribut de session
+            }
+        %>
+
+        <jsp:include page="<%=headerJSP%>" />
 
         <div class="main-content">
             <div class="container-fluid mt-5">

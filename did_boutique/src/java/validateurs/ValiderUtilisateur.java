@@ -69,7 +69,7 @@ public class ValiderUtilisateur {
             erreurs.add("Le téléphone doit être un nombre positif de 8 chiffres.");
         }
         
-        if(rutilisateur.getUtilisateurByMatricule(utilisateur.getMatricule())){
+        if(rutilisateur.getUtilisateurByMatricule(utilisateur.getMatricule()) !=null){
             erreurs.add("ce matricule existe déja");
         }
         return erreurs; // Retourne la liste des erreurs

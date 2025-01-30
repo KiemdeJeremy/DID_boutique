@@ -12,6 +12,18 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+       <input type="checkbox" id="check">
+        <label for="check">
+            <i class="fas fa-bars" id="btn"></i>
+            <i class="fas fa-times" id="cancel"></i>
+        </label>
+        <%
+            String headerJSP = (String) session.getAttribute("headerJSP");
+            if (headerJSP == null) {
+                headerJSP = "/vues/mesInclusions/adminHeader.jsp"; // En cas de problème avec l'attribut de session
+            }
+        %>
+
+        <jsp:include page="<%=headerJSP%>" />
     </body>
 </html>
