@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlleurs;
 
 import java.io.IOException;
@@ -14,24 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Machat;
-import models.Mclient;
 import requêtes.Rachat;
-import requêtes.Rclient;
 
 /**
- *
- * @author USER
+ * Servlet pour l'affichage de la liste des achats.
  */
-@WebServlet(name = "ListClient", urlPatterns = {"/listClient"})
-public class ListClient extends HttpServlet {
+@WebServlet(name = "ListAchat", urlPatterns = {"/listAchat"})
+public class ListAchat extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private Rclient rclient;
     private Rachat rachat;
 
     @Override
     public void init() throws ServletException {
-        rclient = new Rclient();
         rachat = new Rachat();
     }
 
@@ -39,22 +29,16 @@ public class ListClient extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Mclient> listClients = rclient.listAllClients();
-        if (listClients == null) {
-            listClients = new ArrayList<>(); // Initialise la liste si elle est null
-        }
-
-        // Ajoute la liste des clients à la requête
-        request.setAttribute("listClients", listClients);
-
         List<Machat> listAchats = rachat.listAllAchats();
         if (listAchats == null) {
             listAchats = new ArrayList<>(); // Initialise la liste si elle est null
         }
-
+        
         // Ajoute la liste des achats à la requête
         request.getSession().setAttribute("listAchats", listAchats);
-        // Redirige vers la vue
+
+        // Redirection vers la vue 
+        // normalement cela devrait être vers la vue achat.jsp mais je l'ai combiné avec la vue client.jsp
         request.getRequestDispatcher("/vues/client.jsp").forward(request, response);
     }
 
@@ -66,6 +50,6 @@ public class ListClient extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Servlet pour l'affichage de la liste des clients";
+        return "Servlet pour l'affichage de la liste des achats";
     }
 }

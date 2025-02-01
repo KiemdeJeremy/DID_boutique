@@ -21,7 +21,7 @@ and open the template in the editor.
             <i class="fas fa-bars" id="btn"></i>
             <i class="fas fa-times" id="cancel"></i>
         </label>
-        
+
         <%
             String headerJSP = (String) session.getAttribute("headerJSP");
             if (headerJSP == null) {
@@ -32,14 +32,7 @@ and open the template in the editor.
         <jsp:include page="<%=headerJSP%>" />
 
         <div class="main-content">
-            <%
-                Mutilisateur userConnect = null;
-                userConnect = (Mutilisateur) session.getAttribute("userConnect");
-                if (userConnect != null) {
-                    
-                }
 
-            %>
         </div>
         <!-- Bootstrap & jQuery -->
         <!-- jQuery -->

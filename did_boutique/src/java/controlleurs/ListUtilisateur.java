@@ -40,9 +40,7 @@ public class ListUtilisateur extends HttpServlet {
         if (listUtilisateurs == null) {
             listUtilisateurs = new ArrayList<>(); // Initialise la liste si elle est null
         }
-        for (Mutilisateur utilisateur : listUtilisateurs) {
-            System.out.println(utilisateur.getRole());
-        }
+      
         request.setAttribute("listUtilisateurs", listUtilisateurs);
         request.getRequestDispatcher("/vues/utilisateur.jsp").forward(request, response);
     }
