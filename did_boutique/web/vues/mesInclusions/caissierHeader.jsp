@@ -27,6 +27,7 @@
                 <li><a href="${pageContext.request.contextPath}/listAchat"><i class="fa-solid fa-cart-shopping"></i>Achat</a></li>
                 <li><a href="${pageContext.request.contextPath}/listDetailAchat"><i class="fa-solid fa-cash-register"></i>Detail_Achat</a></li>
                 <li><a href="${pageContext.request.contextPath}/listClient"><i class="fa-solid fa-id-card"></i>Client</a></li>
+                <li><a href="${pageContext.request.contextPath}/listCredit"><i class="fa-solid fa-paste"></i>Credit</a></li>
             </ul>
         </div>
     </body>

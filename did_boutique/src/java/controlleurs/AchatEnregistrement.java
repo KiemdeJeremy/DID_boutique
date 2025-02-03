@@ -1,4 +1,4 @@
- package controlleurs;
+package controlleurs;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Machat;
+import models.Mcredit;
 import requêtes.Rachat;
+import requêtes.Rcredit;
 import validateurs.ValiderAchat;
 
 /**
@@ -91,9 +93,6 @@ public class AchatEnregistrement extends HttpServlet {
             if (remiseStr != null && !remiseStr.trim().isEmpty()) {
                 try {
                     remise = Double.parseDouble(remiseStr);
-                    if (remise < 0) {
-                        erreurs.add("La remise doit être positive ou zéro.");
-                    }
                 } catch (NumberFormatException e) {
                     erreurs.add("La remise doit être un nombre valide.");
                 }
@@ -138,13 +137,32 @@ public class AchatEnregistrement extends HttpServlet {
             if (!erreurs.isEmpty()) {
                 request.getSession().setAttribute("achat", achat);
                 request.getSession().setAttribute("erreursAchat", erreurs);
-                response.sendRedirect(request.getContextPath() + "/listAchat");
+                response.sendRedirect(request.getContextPath() + "/listClient");
                 return; // Important : arrêter l'exécution ici
             } else {
-                // Aucune erreur, l'achat est valide
+                // Aucune erreur, l'achat est valide 
                 rachat.insertAchat(achat);
                 request.getSession().setAttribute("messageAchat", "Achat enregistré avec succès");
-                response.sendRedirect(request.getContextPath() + "/listAchat");
+
+                Machat achatTicket = rachat.getMaxAchatByClient(achat);
+                // Générer le ticket de caisse
+                rachat.generateTicket(achatTicket);
+
+                //insertion dans la table credit si la somme encaissée est inférieur au montant de l'achet
+                if (achatTicket.getSommeEncaisse() < achatTicket.getMontant()) {
+
+                    Mcredit credit = new Mcredit();
+                    credit.setDateCredit(dateAchat);
+                    credit.setMontantCredit(montant);
+                    Date dateReglement = null;
+                    credit.setDateReglement(dateReglement);
+                    credit.setStatut("Non Réglé");
+                    credit.setIdAchat(achatTicket.getIdAchat());
+                    //insertion
+                    Rcredit rcredit = new Rcredit();
+                    rcredit.insertCredit(credit);
+                }
+                response.sendRedirect(request.getContextPath() + "/listClient");
                 return; // Important : arrêter l'exécution ici
             }
 

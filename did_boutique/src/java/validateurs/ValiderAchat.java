@@ -31,12 +31,7 @@ public class ValiderAchat {
         if (achat.getSommeEncaisse() == null || achat.getSommeEncaisse() < 0) {
             erreurs.add("La somme encaissée doit être un nombre positif.");
         }
-
-        // Validation de la remise
-        if (achat.getRemise() == null || achat.getRemise() < 0) {
-            erreurs.add("La remise doit être un nombre positif.");
-        }
-
+        
         // Validation de l'identifiant de l'utilisateur
         if (achat.getIdUtilisateur() == null || achat.getIdUtilisateur() <= 0) {
             erreurs.add("L'identifiant de l'utilisateur doit être un nombre positif.");

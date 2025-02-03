@@ -256,7 +256,7 @@
                 <div class="row">  
 
                     <div class="col-4">
-                        <div class="bg-light p-4 mb-4">
+                        <div class="p-4 mb-4" style="background-color: darkorange">
                             <h3 class="text-center">Enregistrer un Achat</h3>
                             <%
                                 // Récupération de l'achat de la session
@@ -277,18 +277,18 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="montant">Montant</label>
-                                    <input type="number" class="form-control" name="montant" step="0.01" required 
+                                    <input type="number" class="form-control" id="montant" name="montant" oninput="updateRemise()" step="0.01" required 
                                            value="<%= achatTransmis != null ? achatTransmis.getMontant() : ""%>">
                                 </div>
                                 <div class="form-group">
                                     <label for="sommeEncaisse">Somme Encaissée</label>
-                                    <input type="number" class="form-control" name="sommeEncaisse" step="0.01" required 
+                                    <input type="number" class="form-control" id="sommeEncaisse" name="sommeEncaisse" oninput="updateRemise()" step="0.01" required 
                                            value="<%= achatTransmis != null ? achatTransmis.getSommeEncaisse() : ""%>">
                                 </div>
                                 <div class="form-group">
                                     <label for="remise">Remise</label>
-                                    <input type="number" class="form-control" name="remise" step="0.01" 
-                                           value="<%= achatTransmis != null ? achatTransmis.getRemise() : ""%>">
+                                    <input type="number" class="form-control" id="remise" name="remise" step="0.01" 
+                                           value="<%= achatTransmis != null ? achatTransmis.getRemise() : ""%>"readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="idUtilisateur">ID Utilisateur</label>
@@ -413,13 +413,13 @@
                                                     <div class="form-group">
                                                         <label for="idUtilisateur">ID Utilisateur</label>
                                                         <input type="text" class="form-control" name="idUtilisateur" required 
-                                                               value="<%= userConnect != null ? userConnect.getIdUtilisateur() + "-" + userConnect.getNom() : ""%>" 
+                                                               value="<%= achat != null ? achat.getIdUtilisateur() : ""%>" 
                                                                readonly>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="idClient">ID Client</label>
                                                         <input type="text" class="form-control" name="idClient" required 
-                                                               value="<%= clientAchat != null ? clientAchat.getIdClient() + "-" + clientAchat.getNom() : ""%>" 
+                                                               value="<%= achat != null ? achat.getIdClient() : ""%>" 
                                                                readonly>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Sauvegarder</button>
@@ -566,5 +566,18 @@
                 </script>
             </div>
         </div>
+        <script>
+            function updateRemise() {
+                // Récupérer les valeurs des champs
+                var montant = parseFloat(document.getElementById("montant").value) || 0;
+                var sommeEncaisse = parseFloat(document.getElementById("sommeEncaisse").value) || 0;
+
+                // Calculer la remise
+                var remise = sommeEncaisse - montant;
+
+                // Mettre à jour le champ de remise
+                document.getElementById("remise").value = remise.toFixed(2); // Limiter à 2 décimales
+            }
+        </script>
     </body>
 </html>

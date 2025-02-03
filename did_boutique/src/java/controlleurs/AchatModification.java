@@ -33,11 +33,8 @@ public class AchatModification extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            
-            // Récupération de l'ID de l'achat à modifier
             Long idAchat = Long.parseLong(request.getParameter("idAchat"));
 
-            // Récupération des paramètres du formulaire de modification
             String dateAchatStr = request.getParameter("dateAchat");
             String montantStr = request.getParameter("montant");
             String sommeEncaisseStr = request.getParameter("sommeEncaisse");
@@ -45,85 +42,68 @@ public class AchatModification extends HttpServlet {
             String idUtilisateurStr = request.getParameter("idUtilisateur");
             String idClientStr = request.getParameter("idClient");
 
-            // Validation des paramètres
             java.sql.Date dateAchat = null;
+            List<String> erreurs = new ArrayList<>();
+
+            // Validation de la date
             if (dateAchatStr != null && !dateAchatStr.trim().isEmpty()) {
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     java.util.Date parsedDate = dateFormat.parse(dateAchatStr);
                     dateAchat = new java.sql.Date(parsedDate.getTime());
                 } catch (ParseException e) {
-                    
+                    erreurs.add("Format de date invalide.");
                 }
             } else {
-               
-            }
-            Double montant = null;
-            if (montantStr != null && !montantStr.trim().isEmpty()) {
-                try {
-                    montant = Double.parseDouble(montantStr);
-                } catch (NumberFormatException e) {
-                    // Gérer l'erreur pour montant
-                }
+                erreurs.add("La date d'achat est requise.");
             }
 
-            Double sommeEncaisse = null;
-            if (sommeEncaisseStr != null && !sommeEncaisseStr.trim().isEmpty()) {
-                try {
-                    sommeEncaisse = Double.parseDouble(sommeEncaisseStr);
-                } catch (NumberFormatException e) {
-                    // Gérer l'erreur pour sommeEncaisse
-                }
-            }
+            // Validation des montants
+            Double montant = parseDouble(montantStr, erreurs, "Montant");
+            Double sommeEncaisse = parseDouble(sommeEncaisseStr, erreurs, "Somme Encaissée");
+            Double remise = parseDouble(remiseStr, erreurs, "Remise");
+            Long idUtilisateur = parseLong(idUtilisateurStr, erreurs, "ID Utilisateur");
+            Long idClient = parseLong(idClientStr, erreurs, "ID Client");
 
-            Double remise = null;
-            if (remiseStr != null && !remiseStr.trim().isEmpty()) {
-                try {
-                    remise = Double.parseDouble(remiseStr);
-                } catch (NumberFormatException e) {
-                    // Gérer l'erreur pour remise
-                }
-            }
-
-            Long idUtilisateur = null;
-            if (idUtilisateurStr != null && !idUtilisateurStr.trim().isEmpty()) {
-                try {
-                    idUtilisateur = Long.parseLong(idUtilisateurStr);
-                } catch (NumberFormatException e) {
-                    // Gérer l'erreur pour idUtilisateur
-                }
-            }
-
-            Long idClient = null;
-            if (idClientStr != null && !idClientStr.trim().isEmpty()) {
-                try {
-                    idClient = Long.parseLong(idClientStr);
-                } catch (NumberFormatException e) {
-                    // Gérer l'erreur pour idClient
-                }
-            }
-
-            // Création de l'objet achat avec les nouvelles valeurs
             Machat achat = new Machat(dateAchat, montant, sommeEncaisse, remise, idUtilisateur, idClient);
             achat.setIdAchat(idAchat);
 
-            // Validation des données
-            List<String> erreurs = ValiderAchat.validerAchat(achat);
-
             if (!erreurs.isEmpty()) {
-                // En cas d'erreurs de validation
-                request.setAttribute("achat", achat);
-                request.setAttribute("erreursAchat", erreurs);
-                response.sendRedirect(request.getContextPath() + "/listAchat");
+                request.getSession().setAttribute("achat", achat);
+                request.getSession().setAttribute("erreursAchat", erreurs);
+                response.sendRedirect(request.getContextPath() + "/listClient");
             } else {
-                // Si les données sont valides, mise à jour de l'achat
                 rachat.updateAchat(achat);
                 request.getSession().setAttribute("messageAchat", "Achat modifié avec succès");
-                response.sendRedirect(request.getContextPath() + "/listAchat");
+                response.sendRedirect(request.getContextPath() + "/listClient");
             }
         } catch (Exception e) {
-            response.sendRedirect(request.getContextPath() + "/erreur.jsp");
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Une erreur est survenue : " + e.getMessage());
+            request.getRequestDispatcher("/erreur.jsp").forward(request, response);
         }
+    }
+
+    private Double parseDouble(String value, List<String> erreurs, String fieldName) {
+        if (value != null && !value.trim().isEmpty()) {
+            try {
+                return Double.parseDouble(value);
+            } catch (NumberFormatException e) {
+                erreurs.add(fieldName + " doit être un nombre valide.");
+            }
+        }
+        return null;
+    }
+
+    private Long parseLong(String value, List<String> erreurs, String fieldName) {
+        if (value != null && !value.trim().isEmpty()) {
+            try {
+                return Long.parseLong(value);
+            } catch (NumberFormatException e) {
+                erreurs.add(fieldName + " doit être un nombre valide.");
+            }
+        }
+        return null;
     }
 
     @Override
