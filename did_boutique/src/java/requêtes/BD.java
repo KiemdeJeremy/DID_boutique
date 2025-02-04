@@ -20,7 +20,7 @@ public class BD {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             // Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/attestation?useSSL=false","root","");  
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/did_boutique", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/did_boutique?useUnicode=true&characterEncoding=UTF-8", "root", "");
             return con;
         } catch (Exception e) {
             e.printStackTrace();

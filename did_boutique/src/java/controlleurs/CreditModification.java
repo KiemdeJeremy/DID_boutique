@@ -62,10 +62,11 @@ public class CreditModification extends HttpServlet {
 
             // Mise à jour du crédit dans la base de données
             rcredit.updateCredit(credit);
-            request.getSession().setAttribute("message", "Crédit modifié avec succès");
+            request.getSession().setAttribute("messageCredit", "Crédit modifié avec succès");
             response.sendRedirect(request.getContextPath() + "/listCredit");
         } catch (ParseException e) {
-            response.sendRedirect(request.getContextPath() + "/erreur.jsp");
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/error.jsp");
         } catch (Exception e) {
             response.sendRedirect(request.getContextPath() + "/erreur.jsp");
         }

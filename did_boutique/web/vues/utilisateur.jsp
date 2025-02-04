@@ -83,7 +83,6 @@
                                     <label for="role">Role de l'utilisateur</label>
                                     <select id="role" name="role" class="form-control" required>
                                         <option value="">choisir</option>
-                                        <option value="livreur" <%= user != null && "livreur".equals(user.getRole()) ? "selected" : ""%>>Livreur</option>
                                         <option value="magasinier" <%= user != null && "magasinier".equals(user.getRole()) ? "selected" : ""%>>Magasinier</option>
                                         <option value="caissier" <%= user != null && "caissier".equals(user.getRole()) ? "selected" : ""%>>Caissier</option>
                                         <option value="administrateur" <%= user != null && "administrateur".equals(user.getRole()) ? "selected" : ""%>>Administrateur</option>

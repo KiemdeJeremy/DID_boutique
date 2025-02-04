@@ -153,10 +153,10 @@ public class AchatEnregistrement extends HttpServlet {
 
                     Mcredit credit = new Mcredit();
                     credit.setDateCredit(dateAchat);
-                    credit.setMontantCredit(montant);
+                    credit.setMontantCredit(remise);
                     Date dateReglement = null;
                     credit.setDateReglement(dateReglement);
-                    credit.setStatut("Non Réglé");
+                    credit.setStatut("non paye");
                     credit.setIdAchat(achatTicket.getIdAchat());
                     //insertion
                     Rcredit rcredit = new Rcredit();
