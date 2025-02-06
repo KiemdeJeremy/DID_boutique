@@ -63,14 +63,15 @@ public class ProduitEnregistrement extends HttpServlet {
             // Création du produit
             Mproduit produit = new Mproduit(nom, prix, quantite, datePeremption, filePath);
             rproduit.insertProduit(produit);
-
+            request.getSession().setAttribute("messageProduit", "produit enregistré !!! Veuillez actualiser la page");
             // Redirection vers la liste des produits
             response.sendRedirect(request.getContextPath() + "/listProduit");
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Erreur lors de l'enregistrement du produit.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getSession().setAttribute("messageProduit", "produit non enregistré !!!");
+            request.getSession().setAttribute("produitTransmis", "produit");
+            response.sendRedirect(request.getContextPath() + "/listProduit");
         }
     }
 
