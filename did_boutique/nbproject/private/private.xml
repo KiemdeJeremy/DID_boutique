@@ -3,16 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/requêtes/Rcredit.java</file>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/AchatEnregistrement.java</file>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/CreditModification.java</file>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/models/Machat.java</file>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/requêtes/Rfournisseur.java</file>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/FournisseurModification.java</file>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/CreditSuppression.java</file>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/validateurs/ValiderAchat.java</file>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/models/Mcredit.java</file>
-            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/FournisseurSuppression.java</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/ProduitSuppression.java</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/web/vues/credit.jsp</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/ProduitModification.java</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/src/java/controlleurs/ProduitEnregistrement.java</file>
+            <file>file:/C:/Users/USER/Desktop/mes%20projets%20github/DID_boutique/did_boutique/web/vues/produit.jsp</file>
         </group>
     </open-files>
 </project-private>

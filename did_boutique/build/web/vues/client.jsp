@@ -400,15 +400,15 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="montant">Montant</label>
-                                                        <input type="number" class="form-control" name="montant" value="<%= achat.getMontant()%>" step="0.01" required>
+                                                        <input type="number" class="form-control" id="montantUpdate" name="montant" value="<%= achat.getMontant()%>" oninput="updateRemiseUpdate()"  step="0.01" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="sommeEncaisse">Somme Encaissée</label>
-                                                        <input type="number" class="form-control" name="sommeEncaisse" value="<%= achat.getSommeEncaisse()%>" step="0.01" required>
+                                                        <input type="number" class="form-control" id="sommeEncaisseUpdate" name="sommeEncaisse" value="<%= achat.getSommeEncaisse()%>" oninput="updateRemiseUpdate()"  step="0.01" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="remise">Remise</label>
-                                                        <input type="number" class="form-control" name="remise" value="<%= achat.getRemise()%>" step="0.01">
+                                                        <input type="number" class="form-control" id="remiseUpdate" name="remise" value="<%= achat.getRemise()%>" step="0.01" readonly>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="idUtilisateur">ID Utilisateur</label>
@@ -577,6 +577,20 @@
 
                 // Mettre à jour le champ de remise
                 document.getElementById("remise").value = remise.toFixed(2); // Limiter à 2 décimales
+            }
+        </script>
+        
+        <script>
+            function updateRemiseUpdate() {
+                // Récupérer les valeurs des champs
+                var montantUpdate = parseFloat(document.getElementById("montantUpdate").value) || 0;
+                var sommeEncaisseUpdate = parseFloat(document.getElementById("sommeEncaisseUpdate").value) || 0;
+
+                // Calculer la remise
+                var remiseUpdate = sommeEncaisseUpdate - montantUpdate;
+
+                // Mettre à jour le champ de remise
+                document.getElementById("remiseUpdate").value = remiseUpdate.toFixed(2); // Limiter à 2 décimales
             }
         </script>
     </body>
