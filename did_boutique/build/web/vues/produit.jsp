@@ -71,12 +71,13 @@
                                             for (Mproduit produit : listProduit) {
                                                 String cheminComplet = produit.getImage();
                                                 String nomImage = cheminComplet.substring(cheminComplet.lastIndexOf('/') + 1);
-                                                System.out.println(nomImage);
+                                                // Vérification de la quantité pour appliquer une classe CSS
+                                                String rowClass = produit.getQuantite() <= 5 ? "table-danger" : "";
                                     %>
-                                    <tr>
+                                    <tr class="<%= rowClass%>">
                                         <td><%= produit.getIdProduit()%></td>
                                         <td>
-                                            <img style="width: 35px;height: 35px;object-fit: cover;" 
+                                            <img style="width: 35px; height: 35px; object-fit: cover;" 
                                                  src="${pageContext.request.contextPath}/uploads/<%= nomImage%>" 
                                                  class="small-img" 
                                                  alt="Image du produit">
@@ -104,7 +105,7 @@
                                                 <div class="container-fluid">
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <img src="uploads/<%= nomImage%>" class="img-fluid" alt="<%= produit.getNom()%>">
+                                                            <img src="${pageContext.request.contextPath}/uploads/<%= nomImage%>" class="img-fluid" alt="<%= produit.getNom()%>">
                                                         </div>
                                                         <div class="col-md-6">
                                                             <h1 class="text-success"><u><%= produit.getNom()%></u></h1>
@@ -154,7 +155,7 @@
                                                     <div class="form-group">
                                                         <label for="image<%= produit.getIdProduit()%>">Image du produit</label>
                                                         <input type="file" id="image<%= produit.getIdProduit()%>" name="image" class="form-control-file">
-                                                        <img style="width: 50px;height: 50px;object-fit: cover;" src="uploads/<%= nomImage%>" alt="Image actuelle">
+                                                        <img style="width: 50px;height: 50px;object-fit: cover;" src="${pageContext.request.contextPath}/uploads/<%= nomImage%>" alt="Image actuelle">
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Sauvegarder</button>
                                                 </form>

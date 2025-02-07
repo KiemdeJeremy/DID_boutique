@@ -128,6 +128,31 @@ public class RdetailAchat {
         return listDetailsAchats;
     }
 
+    // Méthode pour obtenir la liste des détails d'achat par l'identifiant d'achat
+    public List<MdetailAchat> listDetailsAchatByIdAchat(Long idAchat) {
+        List<MdetailAchat> listDetailsAchats = new ArrayList<>();
+        String sql = "SELECT * FROM detailachat WHERE idAchat = ?";
+        try {
+            con = BD.maConnexion(); // Obtient la connexion vers la base de données 
+            pst = con.prepareStatement(sql);
+            pst.setLong(1, idAchat);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                MdetailAchat detailAchat = new MdetailAchat();
+                detailAchat.setIdDetailAchat(rs.getLong("idDetailAchat"));
+                detailAchat.setQuantite(rs.getDouble("quantite"));
+                detailAchat.setPrixUnitaire(rs.getDouble("prixUnitaire"));
+                detailAchat.setCoutTotal(rs.getDouble("coutTotal"));
+                detailAchat.setIdAchat(rs.getLong("idAchat"));
+                detailAchat.setIdProduit(rs.getLong("idProduit"));
+                listDetailsAchats.add(detailAchat);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listDetailsAchats;
+    }
+
     // Méthode pour fermer les ressources
     private void closeResources() {
         try {

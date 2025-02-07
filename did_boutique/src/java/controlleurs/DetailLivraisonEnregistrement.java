@@ -8,30 +8,30 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Machat;
-import models.MdetailAchat;
+import models.MdetailLivraison;
+import models.Mlivraison;
 import models.Mproduit;
-import requêtes.Rachat;
-import requêtes.RdetailAchat;
+import requêtes.RdetailLivraison;
+import requêtes.Rlivraison;
 import requêtes.Rproduit;
-import validateurs.ValiderDetailAchat;
+import validateurs.ValiderDetailLivraison;
 
 /**
- * Servlet pour l'enregistrement des détails d'achat.
+ * Servlet pour l'enregistrement des détails de livraison.
  */
-@WebServlet(name = "DetailAchatEnregistrement", urlPatterns = {"/detailAchatEnregistrement"})
-public class DetailAchatEnregistrement extends HttpServlet {
+@WebServlet(name = "DetailLivraisonEnregistrement", urlPatterns = {"/detailLivraisonEnregistrement"})
+public class DetailLivraisonEnregistrement extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private RdetailAchat rdetailAchat;
+    private RdetailLivraison rdetailLivraison;
     private Rproduit rproduit;
-    private Rachat rachat;
+    private Rlivraison rlivraison;
 
     @Override
     public void init() throws ServletException {
-        rdetailAchat = new RdetailAchat();
+        rdetailLivraison = new RdetailLivraison();
         rproduit = new Rproduit();
-        rachat = new Rachat();
+        rlivraison = new Rlivraison();
     }
 
     @Override
@@ -46,14 +46,14 @@ public class DetailAchatEnregistrement extends HttpServlet {
             String quantiteStr = request.getParameter("quantite");
             String prixUnitaireStr = request.getParameter("prixUnitaire");
             String coutTotalStr = request.getParameter("coutTotal");
-            String idAchatStr = request.getParameter("idAchat");
+            String idLivraisonStr = request.getParameter("idLivraison");
             String idProduitStr = request.getParameter("idProduit");
 
             // Conversion et validation des paramètres
             Double quantite = null;
             Double prixUnitaire = null;
             Double coutTotal = null;
-            Long idAchat = null;
+            Long idLivraison = null;
             Long idProduit = null;
 
             // Validation de la quantité
@@ -90,13 +90,13 @@ public class DetailAchatEnregistrement extends HttpServlet {
             }
 
             // Validation des identifiants
-            if (idAchatStr == null || idAchatStr.trim().isEmpty()) {
-                erreurs.add("L'identifiant d'achat est requis.");
+            if (idLivraisonStr == null || idLivraisonStr.trim().isEmpty()) {
+                erreurs.add("L'identifiant de livraison est requis.");
             } else {
                 try {
-                    idAchat = Long.parseLong(idAchatStr);
+                    idLivraison = Long.parseLong(idLivraisonStr);
                 } catch (NumberFormatException e) {
-                    erreurs.add("L'identifiant d'achat doit être un nombre valide.");
+                    erreurs.add("L'identifiant de livraison doit être un nombre valide.");
                 }
             }
 
@@ -110,54 +110,51 @@ public class DetailAchatEnregistrement extends HttpServlet {
                 }
             }
 
-            // Création de l'objet détail d'achat
-            MdetailAchat detailAchat = new MdetailAchat(quantite, prixUnitaire, coutTotal, idAchat, idProduit);
-// Validation du détail d'achat
-            List<String> erreursValidation = ValiderDetailAchat.validerDetailAchat(detailAchat);
+            // Création de l'objet détail de livraison
+            MdetailLivraison detailLivraison = new MdetailLivraison(quantite, prixUnitaire, coutTotal, idLivraison, idProduit);
+
+            // Validation du détail de livraison
+            List<String> erreursValidation = ValiderDetailLivraison.validerDetailLivraison(detailLivraison);
             erreurs.addAll(erreursValidation);
 
-// Ici je contrôle le montant de l'achat mère et la somme des montants détaillés
-            List<MdetailAchat> detailAchatExistant = rdetailAchat.listDetailsAchatByIdAchat(idAchat);
-            Machat achatExistant = rachat.getAchat(idAchat);
+            // Ici je contrôle le montant de la livraison mère et la somme des montants détaillés
+            List<MdetailLivraison> detailLivraisonExistant = rdetailLivraison.listDetailsLivraisonByIdLivraison(idLivraison);
+            Mlivraison livraisonExistant = rlivraison.getLivraison(idLivraison);
 
-// Initialisation de la somme avec le nouveau détail d'achat
-            double sommeDetailAchat = detailAchat.getCoutTotal(); // Commence avec le nouveau montant
+            // Initialisation de la somme avec le nouveau détail de livraison
+            double sommeDetailLivraison = detailLivraison.getCoutTotal(); // Commence avec le nouveau montant
 
-// Vérification si des détails d'achat existent déjà
-            if (detailAchatExistant != null && !detailAchatExistant.isEmpty()) {
-                // Ajoute les montants des détails d'achat existants
-                for (MdetailAchat detailAchatExist : detailAchatExistant) {
-                    sommeDetailAchat += detailAchatExist.getCoutTotal();
+            // Vérification si des détails de livraison existent déjà
+            if (detailLivraisonExistant != null && !detailLivraisonExistant.isEmpty()) {
+                // Ajoute les montants des détails de livraison existants
+                for (MdetailLivraison detailLivraisonExist : detailLivraisonExistant) {
+                    sommeDetailLivraison += detailLivraisonExist.getCoutTotal();
                 }
             }
 
-// Comparaison de la somme totale avec le montant de l'achat
-            if (sommeDetailAchat > achatExistant.getMontant()) {
-                erreurs.add("Erreur : Le total des détails (" + sommeDetailAchat
-                        + ") dépasse le montant de l'achat (" + achatExistant.getMontant() + ")");
+            // Comparaison de la somme totale avec le montant de la livraison
+            if (sommeDetailLivraison > livraisonExistant.getMontantLivraison()) {
+                erreurs.add("Erreur : Le total des détails (" + sommeDetailLivraison
+                        + ") dépasse le montant de la livraison (" + livraisonExistant.getMontantLivraison() + ")");
             } else {
-
                 // Vérification du stock
                 Mproduit produit = rproduit.getProduit(idProduit);
-                if (produit.getQuantite() < quantite) {
-                    erreurs.add("le Stock restant est insuffisant !!!");
-                } else {
-                    produit.setQuantite(produit.getQuantite() - quantite);
+                
+                    produit.setQuantite(produit.getQuantite() + quantite);
                     rproduit.updateProduit(produit);
-                }
             }
 
             // Traitement selon la présence d'erreurs
             if (!erreurs.isEmpty()) {
-                request.getSession().setAttribute("detailAchatTransmis", detailAchat);
+                request.getSession().setAttribute("detailLivraisonTransmis", detailLivraison);
                 request.getSession().setAttribute("erreurs", erreurs);
-                response.sendRedirect(request.getContextPath() + "/listDetailAchat"); // Redirige vers la liste des détails d'achat
+                response.sendRedirect(request.getContextPath() + "/listDetailLivraison"); // Redirige vers la liste des détails de livraison
                 return; // Arrête l'exécution ici
             } else {
-                // Aucune erreur, le détail d'achat est valide
-                rdetailAchat.insertDetailAchat(detailAchat);
-                request.getSession().setAttribute("message", "Détail d'achat enregistré avec succès");
-                response.sendRedirect(request.getContextPath() + "/listDetailAchat"); // Redirige vers la liste des détails d'achat
+                // Aucune erreur, le détail de livraison est valide
+                rdetailLivraison.insertDetailLivraison(detailLivraison);
+                request.getSession().setAttribute("message", "Détail de livraison enregistré avec succès");
+                response.sendRedirect(request.getContextPath() + "/listDetailLivraison"); // Redirige vers la liste des détails de livraison
                 return; // Arrête l'exécution ici
             }
 
@@ -175,6 +172,6 @@ public class DetailAchatEnregistrement extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Servlet pour l'enregistrement des détails d'achat.";
+        return "Servlet pour l'enregistrement des détails de livraison.";
     }
 }
