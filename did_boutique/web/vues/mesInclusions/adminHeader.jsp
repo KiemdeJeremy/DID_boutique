@@ -31,6 +31,7 @@
                 <li><a href="${pageContext.request.contextPath}/listDetailAchat"><i class="fa-solid fa-cash-register"></i>Detail_Achat</a></li>
                 <li><a href="${pageContext.request.contextPath}/listCredit"><i class="fa-solid fa-circle-dollar-to-slot"></i>Credit</a></li>
                 <li><a href="${pageContext.request.contextPath}/listProduit"><i class="fa-solid fa-gift"></i>Produit</a></li>
+                <li><a href="${pageContext.request.contextPath}/connexionServlet" class="text-danger"><i class="fa-solid fa-right-from-bracket text-danger"></i>Déconnexion</a></li>
             </ul>
         </div>
     </body>

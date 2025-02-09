@@ -1,3 +1,4 @@
+<%@page import="models.Mutilisateur"%>
 <%@page import="models.Mlivraison"%>
 <%@page import="models.Mproduit"%>
 <%@page import="java.util.List"%>
@@ -7,6 +8,10 @@
 <html>
 
     <%
+        Mutilisateur userConnect = (Mutilisateur) session.getAttribute("userConnect");
+        if(userConnect==null){
+            request.getRequestDispatcher("/connexion.jsp").forward(request, response);
+        }
         String headerJSP = (String) session.getAttribute("headerJSP");
         if (headerJSP == null) {
             headerJSP = "/vues/mesInclusions/adminHeader.jsp"; // En cas de problème avec l'attribut de session
@@ -31,7 +36,7 @@
             <div class="container-fluid mt-5">
                 <div class="row">
                     <div class="col-4">
-                        <div class="bg-dark">
+                        <div class="" style="background-color: blue">
                             <h2 class="mb-4 text-warning text-center"><u>Enregistrer un Détail de Livraison</u></h2>
 
                             <form class="w-75 text-warning ml-5" action="${pageContext.request.contextPath}/detailLivraisonEnregistrement" method="post">

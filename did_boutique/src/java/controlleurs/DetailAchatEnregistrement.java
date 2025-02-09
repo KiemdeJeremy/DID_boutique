@@ -157,6 +157,11 @@ public class DetailAchatEnregistrement extends HttpServlet {
                 // Aucune erreur, le détail d'achat est valide
                 rdetailAchat.insertDetailAchat(detailAchat);
                 request.getSession().setAttribute("message", "Détail d'achat enregistré avec succès");
+                if (sommeDetailAchat == achatExistant.getMontant()) {
+                    //ici je reprend la liste des detailsAchat pour prendre en compte celui qu'on d'ajouté tout récemment
+                    List<MdetailAchat> detailAchatExistantComplet = rdetailAchat.listDetailsAchatByIdAchat(idAchat);
+                    rdetailAchat.generateTicket(achatExistant, detailAchatExistantComplet);
+                }
                 response.sendRedirect(request.getContextPath() + "/listDetailAchat"); // Redirige vers la liste des détails d'achat
                 return; // Arrête l'exécution ici
             }

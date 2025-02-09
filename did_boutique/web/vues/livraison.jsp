@@ -1,8 +1,13 @@
+<%@page import="models.Mutilisateur"%>
 <%@page import="models.Mlivraison"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
     <%
+        Mutilisateur userConnect = (Mutilisateur) session.getAttribute("userConnect");
+        if(userConnect==null){
+            request.getRequestDispatcher("/connexion.jsp").forward(request, response);
+        }
         String headerJSP = (String) session.getAttribute("headerJSP");
         if (headerJSP == null) {
             headerJSP = "/vues/mesInclusions/adminHeader.jsp"; // En cas de problème avec l'attribut de session
@@ -19,7 +24,7 @@
 
                     </div>
                     <div class="col-8">
-                        <img src="${pageContext.request.contextPath}/images/livraison1.jpeg" alt="image camion" class="mt-3 mr-4 " style="width: 210px; height: 180px;" />
+                        <img src="${pageContext.request.contextPath}/images/livraison1.jpeg" alt="image camion" class="mt-3 mr-4 " style="width: 310px; height: 280px;" />
                     </div> <br> <br> <br>   <br> <br> <br>   
                 </div>
                 <div class="row">   
@@ -61,7 +66,7 @@
                             String messageLivraison = (String) session.getAttribute("messageLivraison");
                             List<String> erreursLivraison = (List<String>) session.getAttribute("erreursLivraison");
                             if (messageLivraison != null) {
-                                session.removeAttribute("message");
+                                session.removeAttribute("messageLivraison");
                             }
                             if (erreursLivraison != null) {
                                 session.removeAttribute("erreursLivraison");

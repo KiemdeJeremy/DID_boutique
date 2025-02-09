@@ -4,6 +4,7 @@
     Author     : USER
 --%>
 
+<%@page import="models.Mutilisateur"%>
 <%@page import="models.Mcredit"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -11,6 +12,11 @@
 <!DOCTYPE html>
 <html>
     <%
+        Mutilisateur userConnect = (Mutilisateur) session.getAttribute("userConnect");
+        if(userConnect==null){
+            request.getRequestDispatcher("/connexion.jsp").forward(request, response);
+        }
+        
         String headerJSP = (String) session.getAttribute("headerJSP");
         if (headerJSP == null) {
             headerJSP = "/vues/mesInclusions/adminHeader.jsp"; // En cas de problème avec l'attribut de session
@@ -33,7 +39,7 @@
 
                 </div>
                 <div class="col-8">
-                    <img src="${pageContext.request.contextPath}/images/DID.jpg" alt="logo de DID" class="mt-3 mr-4 " style="width: 180px; height: 150px;" />
+                    <img src="${pageContext.request.contextPath}/images/credit1.png" alt="logo d'un credit" class="mt-3 mr-4 " style="width: 380px; height: 250px;" />
                 </div>        
             </div>
             <div class="row text-center mb-2">

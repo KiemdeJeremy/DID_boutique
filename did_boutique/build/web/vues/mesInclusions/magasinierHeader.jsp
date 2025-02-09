@@ -27,6 +27,7 @@
                 <li><a href="${pageContext.request.contextPath}/listProduit"><i class="fa-solid fa-gift"></i>Produit</a></li>
                 <li><a href="${pageContext.request.contextPath}/listLivraison"><i class="fa-solid fa-car-side"></i>Livraison</a></li>
                 <li><a href="${pageContext.request.contextPath}/listDetailLivraison"><i class="fa-solid fa-paste"></i>Detail_Livraison</a></li>
+                <li><a href="${pageContext.request.contextPath}/connexionServlet" class="text-danger"><i class="fa-solid fa-right-from-bracket text-danger"></i>Déconnexion</a></li>
             </ul>
         </div>
     </body>

@@ -9,18 +9,30 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    
-     <%
-            String headerJSP = (String) session.getAttribute("headerJSP");
-            if (headerJSP == null) {
-                headerJSP = "/vues/mesInclusions/adminHeader.jsp"; // En cas de problème avec l'attribut de session
-            }
-        %>
 
-        <jsp:include page="<%=headerJSP%>" />
-        
+    <%
+        Mutilisateur userConnect = (Mutilisateur) session.getAttribute("userConnect");
+        if (userConnect == null) {
+            request.getRequestDispatcher("/connexion.jsp").forward(request, response);
+        }
+        String headerJSP = (String) session.getAttribute("headerJSP");
+        if (headerJSP == null) {
+            headerJSP = "/vues/mesInclusions/adminHeader.jsp"; // En cas de problème avec l'attribut de session
+        }
+    %>
+
+    <jsp:include page="<%=headerJSP%>" />
+
     <body>
         <div class="main-content"> 
+            <div class="row text-center mb-4">
+                <div class="col-2">
+
+                </div>
+                <div class="col-8">
+                    <img src="${pageContext.request.contextPath}/images/user.jpg" alt="image camion" class="mt-3 mr-4 " style="width: 310px; height: 280px;" />
+                </div> <br> <br> <br>   <br> <br> <br>   
+            </div>
             <%
                 String message = (String) session.getAttribute("message");
                 List<String> erreurs = (List<String>) session.getAttribute("erreurs");

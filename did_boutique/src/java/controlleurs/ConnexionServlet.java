@@ -7,13 +7,17 @@ package controlleurs;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.Mproduit;
 import models.Mutilisateur;
 import org.mindrot.jbcrypt.BCrypt;
+import requêtes.Rproduit;
 import requêtes.Rutilisateur;
 
 /**
@@ -35,28 +39,31 @@ public class ConnexionServlet extends HttpServlet {
         if (userConnect != null) {
             if (BCrypt.checkpw(password, userConnect.getPassword())) {
                 request.getSession().setAttribute("userConnect", userConnect);
-                    String userRole = userConnect.getRole();
-                    String headerJSP;
-                    switch (userRole.toLowerCase()) {
-                        case "caissier":
-                            headerJSP = "/vues/mesInclusions/caissierHeader.jsp";
-                            break;
-                        case "administrateur":
-                            headerJSP = "/vues/mesInclusions/adminHeader.jsp";
-                            break;
-                            case "livreur":
-                            headerJSP = "/vues/mesInclusions/livreurHeader.jsp";
-                            break;
-                            case "magasinier":
-                            headerJSP = "/vues/mesInclusions/magasinierHeader.jsp";
-                            break;
-                        // Ajoutez d'autres cas pour chaque rôle...
-                        default:
-                            headerJSP = "/vues/mesInclusions/default.jsp"; // Un en-tête par défaut si le rôle n'est pas reconnu
+                String userRole = userConnect.getRole();
+                String headerJSP;
+                switch (userRole.toLowerCase()) {
+                    case "caissier":
+                        headerJSP = "/vues/mesInclusions/caissierHeader.jsp";
+                        break;
+                    case "administrateur":
+                        headerJSP = "/vues/mesInclusions/adminHeader.jsp";
+                        break;
+                    case "livreur":
+                        headerJSP = "/vues/mesInclusions/livreurHeader.jsp";
+                        break;
+                    case "magasinier":
+                        headerJSP = "/vues/mesInclusions/magasinierHeader.jsp";
+                        break;
+                    // Ajoutez d'autres cas pour chaque rôle...
+                    default:
+                        headerJSP = "/vues/mesInclusions/default.jsp"; // Un en-tête par défaut si le rôle n'est pas reconnu
                     }
-                    request.getSession().setAttribute("headerJSP", headerJSP);
-                    request.getRequestDispatcher("/index.jsp").forward(request, response);
-                
+                request.getSession().setAttribute("headerJSP", headerJSP);
+
+                Rproduit rproduit = new Rproduit();
+                List<Mproduit> listDesProduits = rproduit.listAllProduits();
+                request.getSession().setAttribute("listDesProduits", listDesProduits);
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
 
             } else {
                 request.getSession().setAttribute("error", "matricule ou mot de passe incorrect");
@@ -71,6 +78,13 @@ public class ConnexionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Détruire l'attribut de session
+        HttpSession session = request.getSession();
+        session.removeAttribute("userConnect");
+
+        // Rediriger vers connexion.jsp
+        response.sendRedirect(request.getContextPath() + "/connexion.jsp");
 
     }
 

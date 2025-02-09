@@ -1,8 +1,13 @@
+<%@page import="models.Mutilisateur"%>
 <%@page import="models.Mfournisseur"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
      <%
+         Mutilisateur userConnect = (Mutilisateur) session.getAttribute("userConnect");
+        if(userConnect==null){
+            request.getRequestDispatcher("/connexion.jsp").forward(request, response);
+        }
             String headerJSP = (String) session.getAttribute("headerJSP");
             if (headerJSP == null) {
                 headerJSP = "/vues/mesInclusions/adminHeader.jsp"; // En cas de problème avec l'attribut de session

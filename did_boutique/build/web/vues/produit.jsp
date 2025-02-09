@@ -1,9 +1,14 @@
+<%@page import="models.Mutilisateur"%>
 <%@page import="models.Mproduit"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <%
+        Mutilisateur userConnect = (Mutilisateur) session.getAttribute("userConnect");
+        if(userConnect==null){
+            request.getRequestDispatcher("/connexion.jsp").forward(request, response);
+        }
         String headerJSP = (String) session.getAttribute("headerJSP");
         if (headerJSP == null) {
             headerJSP = "/vues/mesInclusions/adminHeader.jsp"; // En cas de problème avec l'attribut de session
@@ -20,12 +25,20 @@
         %>
 
         <div class="main-content">
+            <div class="row text-center mb-4">
+                <div class="col-2">
+
+                </div>
+                <div class="col-8">
+                    <img src="${pageContext.request.contextPath}/images/produit.jpg" alt="image d'un produits" class="mt-3 mr-4 " style="width: 380px; height: 250px;" />
+                </div>        
+            </div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-5">
-                        <div class="bg-light mb-4">
-                            <h3 class="text-center">Enregistrer un Nouveau Produit</h3>
-                            <form class=" mx-auto" action="${pageContext.request.contextPath}/produitEnregistrement" method="post" enctype="multipart/form-data">
+                        <div style="background-color: blue">
+                            <h3 class="text-center text-warning">Enregistrer un Nouveau Produit</h3>
+                            <form class="ml-4 text-warning w-75" action="${pageContext.request.contextPath}/produitEnregistrement" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="nom">Nom du produit</label>
                                     <input type="text" id="nom" name="nom" class="form-control" required>
@@ -46,7 +59,7 @@
                                     <label for="image">Image du produit</label>
                                     <input type="file" id="image" name="image" class="form-control-file" required>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                <button type="submit" class="btn btn-primary mb-4">Enregistrer</button>
                             </form>
                         </div>
                     </div>
