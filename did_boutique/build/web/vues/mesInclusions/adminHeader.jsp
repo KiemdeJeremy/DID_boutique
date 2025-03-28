@@ -23,7 +23,7 @@
         <div class="sidebar">
             <header>DID Boutique</header>
             <ul>
-                <li><a href="${pageContext.request.contextPath}/index.jsp"><i class="fa-solid fa-house"></i>Accueil</a></li>
+                <li><a href="${pageContext.request.contextPath}/accueilController"><i class="fa-solid fa-house"></i>Accueil</a></li>
                 <li><a href="${pageContext.request.contextPath}/listUtilisateur"><i class="fa-solid fa-user"></i>Utilisateur</a></li>
                 <li><a href="${pageContext.request.contextPath}/listFournisseur"><i class="fa-brands fa-ubuntu"></i>Fournisseur</a></li>
                 <li><a href="${pageContext.request.contextPath}/listClient"><i class="fa-solid fa-id-card"></i>Client</a></li>

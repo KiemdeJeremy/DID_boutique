@@ -39,7 +39,7 @@ public class UtilisateurModification extends HttpServlet {
         try {
             // Récupération de l'ID de l'utilisateur à modifier
             Long idUtilisateur = Long.parseLong(request.getParameter("idUtilisateur"));
-            
+
             // Récupération des paramètres du formulaire de modification
             String nom = request.getParameter("nom");
             String prenom = request.getParameter("prenom");
@@ -60,12 +60,12 @@ public class UtilisateurModification extends HttpServlet {
             utilisateur.setIdUtilisateur(idUtilisateur);
 
             // Validation des données
-            List<String> erreurs = ValiderUtilisateur.validerUtilisateur(utilisateur);
+            List<String> erreurs = ValiderUtilisateur.validerUtilisateurModification(utilisateur);
 
             if (!erreurs.isEmpty()) {
                 // En cas d'erreurs de validation
                 request.setAttribute("utilisateur", utilisateur);
-                request.setAttribute("erreurs", erreurs);
+                request.getSession().setAttribute("erreurs", erreurs);
                 response.sendRedirect(request.getContextPath() + "/listUtilisateur");
             } else {
                 // Si les données sont valides, mise à jour de l'utilisateur
@@ -73,7 +73,7 @@ public class UtilisateurModification extends HttpServlet {
                 request.getSession().setAttribute("message", "Utilisateur modifié avec succès");
                 response.sendRedirect(request.getContextPath() + "/listUtilisateur");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             response.sendRedirect(request.getContextPath() + "/erreur.jsp");
         }
     }
@@ -81,7 +81,7 @@ public class UtilisateurModification extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     @Override

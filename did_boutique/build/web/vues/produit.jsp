@@ -6,7 +6,7 @@
 <html>
     <%
         Mutilisateur userConnect = (Mutilisateur) session.getAttribute("userConnect");
-        if(userConnect==null){
+        if (userConnect == null) {
             request.getRequestDispatcher("/connexion.jsp").forward(request, response);
         }
         String headerJSP = (String) session.getAttribute("headerJSP");
@@ -85,7 +85,24 @@
                                                 String cheminComplet = produit.getImage();
                                                 String nomImage = cheminComplet.substring(cheminComplet.lastIndexOf('/') + 1);
                                                 // Vérification de la quantité pour appliquer une classe CSS
-                                                String rowClass = produit.getQuantite() <= 5 ? "table-danger" : "";
+                                                // Pour la quantité faible (rouge)
+                                                String rowClass = produit.getQuantite() <= 5 ? "table-danger" : "table-light";
+
+// Pour la date de péremption supérieure à aujourd'hui + 4 mois (jaune)
+                                                java.util.Date dateActuelle = new java.util.Date();
+                                                java.util.Calendar calendar = java.util.Calendar.getInstance();
+                                                calendar.setTime(dateActuelle);
+                                                calendar.add(java.util.Calendar.MONTH, 4);
+                                                java.util.Date dateActuellePlus4Mois = calendar.getTime();
+
+// Si la date d'aujourd'hui dépasse la date de péremption (violet)
+                                                if (dateActuelle.after(produit.getDatePeremption())) {
+                                                    rowClass = "table-dark";
+                                                } // Sinon, si aucune classe n'est définie par la quantité et que la date de péremption est après aujourd'hui + 4 mois (jaune)
+                                                else if ( produit.getDatePeremption().after(dateActuellePlus4Mois)) {
+                                                    rowClass = "table-warning";
+                                                }
+
                                     %>
                                     <tr class="<%= rowClass%>">
                                         <td><%= produit.getIdProduit()%></td>
@@ -122,9 +139,9 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <h1 class="text-success"><u><%= produit.getNom()%></u></h1>
-                                                            <p><strong class="text-warning">Prix:</strong> <%= produit.getPrix()%> FCFA</p>
-                                                            <p><strong class="text-warning">Quantité:</strong> <%= produit.getQuantite()%> pièces</p>
-                                                            <p><strong class="text-warning">Date de péremption:</strong> <%= produit.getDatePeremption()%></p>
+                                                            <p><strong class="text-dark">Prix:</strong> <%= produit.getPrix()%> FCFA</p>
+                                                            <p><strong class="text-dark">Quantité:</strong> <%= produit.getQuantite()%> pièces</p>
+                                                            <p><strong class="text-dark">Date de péremption:</strong> <%= produit.getDatePeremption()%></p>
                                                         </div>
                                                     </div>
                                                 </div>

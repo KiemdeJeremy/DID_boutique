@@ -223,7 +223,7 @@
                                                     <div class="form-group">
                                                         <label for="role<%= utilisateur.getIdUtilisateur()%>">Rôle</label>
                                                         <select class="form-control" id="role<%= utilisateur.getIdUtilisateur()%>" name="role" required>
-                                                            <option value="livreur" <%= utilisateur.getRole().equals("livreur") ? "selected" : ""%>>Livreur</option>
+                                                            <option value="administrateur" <%= utilisateur.getRole().equals("administrateur") ? "selected" : ""%>>Administrateur</option>
                                                             <option value="magasinier" <%= utilisateur.getRole().equals("magasinier") ? "selected" : ""%>>Magasinier</option>
                                                             <option value="caissier" <%= utilisateur.getRole().equals("caissier") ? "selected" : ""%>>Caissier</option>
                                                         </select>
